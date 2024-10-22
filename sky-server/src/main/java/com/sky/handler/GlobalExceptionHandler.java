@@ -1,6 +1,7 @@
 package com.sky.handler;
 
 import com.sky.constant.MessageConstant;
+import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.BaseException;
 import com.sky.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,24 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler
-    public Result exceptionHandler(BaseException ex){
+    public Result<?> exceptionHandler(BaseException ex){
         log.error("异常信息：{}", ex.getMessage());
         return Result.error(ex.getMessage());
     }
 
+//    /**
+//     * 捕获业务异常
+//     * @param ex
+//     * @return
+//     */
+//    @ExceptionHandler
+//    public Result<?> exceptionHandler(AccountNotFoundException ex){
+//
+//        return Result.error(MessageConstant.ACCOUNT_NOT_FOUND);
+//    }
+
     @ExceptionHandler
-    public Result exceptionHandler(SQLIntegrityConstraintViolationException ex){
+    public Result<?> exceptionHandler(SQLIntegrityConstraintViolationException ex){
         String message = ex.getMessage();
         if (message.contains("Duplicate entry")){
             String[] split = message.split(" ");

@@ -1,11 +1,12 @@
 package com.sky.controller.admin;
 
-import com.github.pagehelper.Page;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.constant.MessageConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.EmployeeUpdatePasswordDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
@@ -15,8 +16,10 @@ import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -101,5 +104,61 @@ public class EmployeeController {
         log.info("员工分页查询:{}", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 编辑员工
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("更新员工数据")
+    public Result<?> update(@RequestBody EmployeeDTO employeeDTO) {
+        employeeService.updateUser(employeeDTO);
+        return Result.success(employeeDTO);
+    }
+
+    /**
+     * 根据id获取用户
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id获取用户")
+    public Result<?> getById(@PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+        if (employee == null) {
+            return Result.error(MessageConstant.ACCOUNT_NOT_FOUND);
+        }else {
+            return Result.success(employee);
+        }
+    }
+
+    /**
+     * 启用禁用状态更换
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("更改用户启用禁用状态")
+    public Result<?> startOrStop(@PathVariable Integer status,Long id) {
+        employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+
+    /**
+     * 修改密码
+     * @return
+     */
+    @PutMapping("/editPassword")
+    @ApiOperation("修改密码")
+    public Result<?> updatePassword(@RequestBody EmployeeUpdatePasswordDTO employeeUpdatePasswordDTO) {
+        boolean b = employeeService.updatePassword(employeeUpdatePasswordDTO);
+        if (b){
+            return Result.success();
+        }else {
+            return Result.error(MessageConstant.PASSWORD_ERROR);
+        }
     }
 }
