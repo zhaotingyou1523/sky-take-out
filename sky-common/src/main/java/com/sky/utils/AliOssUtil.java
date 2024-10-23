@@ -7,7 +7,6 @@ import com.aliyun.oss.OSSException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 
@@ -62,7 +61,7 @@ public class AliOssUtil {
                 .append(endpoint)
                 .append("/")
                 .append(objectName);
-
+        log.info("bucketName:{},endpoint:{},objectName:{}", bucketName, endpoint, objectName);
         log.info("文件上传到:{}", stringBuilder.toString());
         return stringBuilder.toString();
     }

@@ -31,14 +31,33 @@ public interface CategoryMapper {
     @AutoFill(OperationType.INSERT)
     void insert(Category category);
 
+    /**
+     * 根据主键删除分类
+     * @param id
+     * @return
+     */
     @Delete("delete from category where id = #{id}")
     int deleteById(Long id);
 
+    /**
+     * 启用禁用
+     * @param status
+     * @param id
+     */
     @Update("update category set status = #{status} where id = #{id}")
     void updateStatus(Integer status,Long id);
 
+    /**
+     * 更新分类数据
+     * @param category
+     */
     @AutoFill(OperationType.UPDATE)
     void update (Category category);
 
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     List<Category> list(Integer type);
 }

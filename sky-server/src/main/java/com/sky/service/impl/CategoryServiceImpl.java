@@ -62,11 +62,20 @@ public class CategoryServiceImpl implements CategoryService {
         return i > 0;
     }
 
+    /**
+     * 启用 禁用
+     * @param status
+     * @param id
+     */
     @Override
     public void updateStatus(Integer status,Long id) {
         categoryMapper.updateStatus(status, id);
     }
 
+    /**
+     * 修改分类数据
+     * @param categoryDTO
+     */
     @Override
     public void update(CategoryDTO categoryDTO) {
         Category category = new Category();
@@ -75,6 +84,12 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.update(category);
     }
 
+
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     @Override
     public List<Category> list(Integer type) {
         return categoryMapper.list(type);

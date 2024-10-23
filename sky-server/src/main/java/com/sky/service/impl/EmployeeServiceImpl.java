@@ -154,6 +154,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee);
     }
 
+    /**
+     * 修改密码
+     * @param employeeUpdatePasswordDTO
+     * @return
+     */
     @Override
     public boolean updatePassword(EmployeeUpdatePasswordDTO employeeUpdatePasswordDTO) {
         String old = DigestUtils.md5DigestAsHex(employeeUpdatePasswordDTO.getOldPassword().getBytes());
