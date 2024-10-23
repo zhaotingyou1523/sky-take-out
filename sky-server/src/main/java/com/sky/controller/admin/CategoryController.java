@@ -1,4 +1,4 @@
-package com.sky.controller.category;
+package com.sky.controller.admin;
 
 import com.sky.constant.MessageConstant;
 import com.sky.dto.CategoryDTO;
