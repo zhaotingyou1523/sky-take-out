@@ -7,7 +7,7 @@
             VALUES
             (#{name},#{categoryId},#{price},#{image},#{description},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})
     </insert>
-    <select id="pageQuery" resultType="com.sky.entity.Dish">
+    <select id="pageQuery" resultType="com.sky.vo.DishVO">
         select d.* , c.name as categoryName from dish d left outer join category c on d.category_id = c.id
         <where>
             <if test="name != null">
@@ -62,10 +62,4 @@
             </if>
         </where>
     </select>
-    <delete id="deleteByIds">
-        delete from dish where id in
-        <foreach collection="ids" item="id" separator=",">
-            #{id}
-        </foreach>
-    </delete>
 </mapper>

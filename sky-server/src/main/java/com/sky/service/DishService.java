@@ -7,6 +7,8 @@ import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.vo.DishVO;
 
+import java.util.List;
+
 public interface DishService {
     /**
      * 分页功能
@@ -30,9 +32,30 @@ public interface DishService {
 
     /**
      * 根据主键删除
-     * @param id
+     * @param ids
      */
-    void deleteById(Long id);
+    void deleteBatch(List<Long> ids);
 
+    /**
+     * 修改菜品和口味
+     * @param dishDTO
+     */
     void updateWithFlavor(DishDTO dishDTO);
+
+    /**
+     * 起售 禁售
+     * @param dish
+     */
+    void updateStatus(Dish dish);
+
+    /**
+     * 根据分类id查询菜品
+     *
+     * @param categoryId
+     * @return
+     */
+    List<Dish> list(Long categoryId);
+
+
+
 }

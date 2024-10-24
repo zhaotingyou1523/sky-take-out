@@ -16,10 +16,8 @@ import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -77,6 +75,7 @@ public class EmployeeController {
     @PostMapping("/logout")
     @ApiOperation("员工退出")
     public Result<String> logout() {
+        log.info("员工退出");
         return Result.success();
     }
 
@@ -88,6 +87,7 @@ public class EmployeeController {
     @PostMapping
     @ApiOperation("添加员工")
     public Result register(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("添加员工:{}", employeeDTO);
         boolean insert = employeeService.Insert(employeeDTO);
         System.out.println("当前id " + Thread.currentThread().getId());
         return Result.success(insert);
@@ -114,6 +114,7 @@ public class EmployeeController {
     @PutMapping
     @ApiOperation("更新员工数据")
     public Result<?> update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("更新员工数据:{}", employeeDTO);
         employeeService.updateUser(employeeDTO);
         return Result.success(employeeDTO);
     }
@@ -126,6 +127,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     @ApiOperation("根据id获取用户")
     public Result<?> getById(@PathVariable Long id) {
+        log.info("根据id获取用户:{}",id);
         Employee employee = employeeService.getById(id);
         if (employee == null) {
             return Result.error(MessageConstant.ACCOUNT_NOT_FOUND);
@@ -143,6 +145,7 @@ public class EmployeeController {
     @PostMapping("/status/{status}")
     @ApiOperation("更改用户启用禁用状态")
     public Result<?> startOrStop(@PathVariable Integer status,Long id) {
+        log.info("更改用户启用禁用状态:{},{}",status,id);
         employeeService.startOrStop(status,id);
         return Result.success();
     }
@@ -154,6 +157,7 @@ public class EmployeeController {
     @PutMapping("/editPassword")
     @ApiOperation("修改密码")
     public Result<?> updatePassword(@RequestBody EmployeeUpdatePasswordDTO employeeUpdatePasswordDTO) {
+        log.info("修改密码:{}", employeeUpdatePasswordDTO);
         boolean b = employeeService.updatePassword(employeeUpdatePasswordDTO);
         if (b){
             return Result.success();

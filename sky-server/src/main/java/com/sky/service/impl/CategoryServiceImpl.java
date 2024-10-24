@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
      * @param categoryPageQueryDTO
      * @return
      */
-    @Override
     public PageResult page(CategoryPageQueryDTO categoryPageQueryDTO) {
         PageHelper.startPage(categoryPageQueryDTO.getPage(),categoryPageQueryDTO.getPageSize());
         Page<Category> page = categoryMapper.pageQuery(categoryPageQueryDTO);
@@ -43,7 +42,6 @@ public class CategoryServiceImpl implements CategoryService {
      * @param categoryDTO
      * @return
      */
-    @Override
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO,category);
@@ -56,7 +54,6 @@ public class CategoryServiceImpl implements CategoryService {
      * @param id
      * @return
      */
-    @Override
     public boolean deleteById(Long id) {
         int i = categoryMapper.deleteById(id);
         return i > 0;
@@ -67,7 +64,6 @@ public class CategoryServiceImpl implements CategoryService {
      * @param status
      * @param id
      */
-    @Override
     public void updateStatus(Integer status,Long id) {
         categoryMapper.updateStatus(status, id);
     }
@@ -76,7 +72,6 @@ public class CategoryServiceImpl implements CategoryService {
      * 修改分类数据
      * @param categoryDTO
      */
-    @Override
     public void update(CategoryDTO categoryDTO) {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO,category);
@@ -90,7 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
      * @param type
      * @return
      */
-    @Override
     public List<Category> list(Integer type) {
         return categoryMapper.list(type);
     }

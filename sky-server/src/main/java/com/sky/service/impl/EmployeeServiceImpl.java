@@ -76,7 +76,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeDTO
      * @return
      */
-    @Override
     public boolean Insert(EmployeeDTO employeeDTO){
         System.out.println("当前id " + Thread.currentThread().getId());
         Employee employee = new Employee();
@@ -107,7 +106,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeePageQueryDTO
      * @return
      */
-    @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         //开始分页查询
         PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
@@ -121,7 +119,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * 修改员工信息
      * @param employeeDTO
      */
-    @Override
     public void updateUser(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
@@ -133,7 +130,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param id
      * @return
      */
-    @Override
     public Employee getById(Long id) {
         Employee employee = employeeMapper.getById(id);
         employee.setPassword("*******");
@@ -145,7 +141,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param status
      * @param id
      */
-    @Override
     public void startOrStop(Integer status, Long id) {
         Employee employee = Employee.builder()
                 .id(id)
@@ -159,7 +154,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeUpdatePasswordDTO
      * @return
      */
-    @Override
     public boolean updatePassword(EmployeeUpdatePasswordDTO employeeUpdatePasswordDTO) {
         String old = DigestUtils.md5DigestAsHex(employeeUpdatePasswordDTO.getOldPassword().getBytes());
         Employee employee = employeeMapper.getById(BaseContext.getCurrentId());

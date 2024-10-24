@@ -9,14 +9,17 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("admin/dish")
-@Api(tags = "菜品管理")
+@Api(tags = "菜品相关接口")
 public class DishController {
     private static final Logger log = LoggerFactory.getLogger(DishController.class);
     @Autowired
@@ -61,11 +64,59 @@ public class DishController {
         return Result.success();
     }
 
+    /**
+     * 修改菜品和口味
+     * @param dishDTO
+     * @return
+     */
     @PutMapping
     @ApiOperation("修改菜品和口味")
     public Result<?> update(@RequestBody DishDTO dishDTO) {
+        log.info("修改菜品和口味:{}",dishDTO.toString());
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
 
+    /**
+     * 起售 禁售
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("起售禁售")
+    public Result<?> updateStatus(@PathVariable Integer status,Long id) {
+        log.info("起售禁售:{},{}",status,id);
+        Dish dish = new Dish();
+        dish.setId(id);
+        dish.setStatus(status);
+        dishService.updateStatus(dish);
+        return Result.success();
+    }
+
+    /**
+     * 菜品批量删除
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("菜品批量删除")
+    public Result<?> delete(@RequestParam List<Long> ids) {
+        log.info("菜品批量删除:{}",ids);
+        dishService.deleteBatch(ids);
+        return Result.success();
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("根据分类id查询菜品")
+    public Result<List<Dish>> list(Long categoryId) {
+        log.info("根据分类id查询菜品:{}",categoryId);
+        List<Dish> list = dishService.list(categoryId);
+        return Result.success(list);
+    }
 }

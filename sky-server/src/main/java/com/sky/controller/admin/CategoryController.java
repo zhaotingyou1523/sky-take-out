@@ -31,6 +31,7 @@ public class CategoryController {
     @GetMapping("/page")
     @ApiOperation("分类分页查询")
     public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO) {
+        log.info("开始分类分页查询:{}", categoryPageQueryDTO);
         PageResult page = categoryService.page(categoryPageQueryDTO);
         return Result.success(page);
     }
@@ -43,6 +44,7 @@ public class CategoryController {
     @PostMapping
     @ApiOperation("新增分类")
     public Result<?> save(@RequestBody CategoryDTO categoryDTO) {
+        log.info("新增分类:{}", categoryDTO);
         categoryService.save(categoryDTO);
         return Result.success();
     }
@@ -55,6 +57,7 @@ public class CategoryController {
     @DeleteMapping
     @ApiOperation("根据id删除分类")
     public Result<?> delete(@RequestParam Long id) {
+        log.info("根据id删除分类:{}",id);
         boolean b = categoryService.deleteById(id);
         if (b) {
             return Result.success();
@@ -71,6 +74,7 @@ public class CategoryController {
     @PutMapping
     @ApiOperation("修改分类")
     public Result<?> update(@RequestBody CategoryDTO categoryDTO) {
+        log.info("修改分类:{}", categoryDTO);
         categoryService.update(categoryDTO);
         return Result.success();
     }
@@ -84,6 +88,7 @@ public class CategoryController {
     @PostMapping("/status/{status}")
     @ApiOperation("启用,禁用分类")
     public Result<?> updateStatus(@PathVariable Integer status, Long id) {
+        log.info("启用,禁用分类:{},{}",status,id);
         categoryService.updateStatus(status, id);
         return Result.success();
     }
@@ -96,6 +101,7 @@ public class CategoryController {
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")
     public Result<List<Category>> list(Integer type) {
+        log.info("根据类型查询分类:{}",type);
         List<Category> list = categoryService.list(type);
         return Result.success(list);
     }
