@@ -11,3 +11,8 @@ sky:
       access-key-id: LTAI5tLhhLB57VH5jep2AcU9
       access-key-secret: J3HmEtiAJrZSpjz1DDZZyGgvNSsbGW
       bucket-name: sky-itcast-zhaotingyou
+  redis:
+    host: localhost
+    port: 6379
+    password: 152367130
+    database: 10
