@@ -34,4 +34,6 @@ public interface SetmealService {
     void update(SetmealDTO setmealDTO);
 
     void updateStatus(Integer status, Long id);
+
+    List<Setmeal> list(Setmeal setmeal);
 }

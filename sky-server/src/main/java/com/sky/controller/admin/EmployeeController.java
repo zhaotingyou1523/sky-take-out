@@ -63,7 +63,7 @@ public class EmployeeController {
                 .name(employee.getName())
                 .token(token)
                 .build();
-
+        log.info(employeeLoginVO.toString());
         return Result.success(employeeLoginVO);
     }
 
