@@ -1,4 +1,0 @@
-### GET request to example server
-GET http://localhost:8080/admin/employee/1
-token:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MSwiZXhwIjoxNzI5MzM1MDIzfQ.kYNlZ99ciH7rIOwIKw_aQ04qIW4MtKOR8-IRB8YApa8
-###
