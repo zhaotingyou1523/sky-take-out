@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.github.pagehelper.Page;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -27,12 +28,11 @@ import java.util.Set;
 @RequestMapping("admin/dish")
 @Api(tags = "菜品相关接口")
 public class DishController {
-
-    public static final String DELETE_DISH = "DishCache";
-
     private static final Logger log = LoggerFactory.getLogger(DishController.class);
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 分页查询
@@ -41,7 +41,7 @@ public class DishController {
      */
     @GetMapping("/page")
     @ApiOperation("分页查询")
-    public Result<?> page(DishPageQueryDTO dishPageQueryDTO) {
+    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
         log.info("分页查询:{}", dishPageQueryDTO);
         PageResult page = dishService.page(dishPageQueryDTO);
         return Result.success(page);
@@ -67,10 +67,13 @@ public class DishController {
      */
     @PostMapping
     @ApiOperation("新增菜品")
-    @CachePut(value = DELETE_DISH, key = "#dishDTO.categoryId")
     public Result<?> save(@RequestBody DishDTO dishDTO) {
         log.info("新增的菜品:{}",dishDTO.toString());
         dishService.saveWithFlavor(dishDTO);
+
+        //清理缓存数据
+        String key = "dish_" + dishDTO.getCategoryId();
+        cleanCache(key);
         return Result.success();
     }
 
@@ -81,10 +84,11 @@ public class DishController {
      */
     @PutMapping
     @ApiOperation("修改菜品和口味")
-    @CacheEvict(value = DELETE_DISH, allEntries = true)
     public Result<?> update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品和口味:{}",dishDTO.toString());
         dishService.updateWithFlavor(dishDTO);
+        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
+        cleanCache("dish_*");
         return Result.success();
     }
 
@@ -96,13 +100,14 @@ public class DishController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("起售禁售")
-    @CacheEvict(value = DELETE_DISH, allEntries = true)
     public Result<?> updateStatus(@PathVariable Integer status,Long id) {
         log.info("起售禁售:{},{}",status,id);
         Dish dish = new Dish();
         dish.setId(id);
         dish.setStatus(status);
         dishService.updateStatus(dish);
+        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
+        cleanCache("dish_*");
         return Result.success();
     }
 
@@ -113,12 +118,12 @@ public class DishController {
      */
     @DeleteMapping
     @ApiOperation("菜品批量删除")
-    @CacheEvict(value = DELETE_DISH, allEntries = true)
     public Result<?> delete(@RequestParam List<Long> ids) {
         log.info("菜品批量删除:{}",ids);
         dishService.deleteBatch(ids);
 
-        //将所有的菜品缓存数据清理掉,所有以dish_开头的key
+        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
+        cleanCache("dish_*");
         return Result.success();
     }
 
@@ -135,13 +140,13 @@ public class DishController {
         return Result.success(list);
     }
 
-//    /**
-//     * 清理缓存数据
-//     * @param pattern
-//     */
-//    private void cleanCache(String pattern){
-//        Set keys = redisTemplate.keys(pattern);
-//        log.info(keys.toString());
-//        redisTemplate.delete(keys);
-//    }
+    /**
+     * 清理缓存数据
+     * @param pattern
+     */
+    private void cleanCache(String pattern){
+        Set keys = redisTemplate.keys(pattern);
+        log.info(keys.toString());
+        redisTemplate.delete(keys);
+    }
 }

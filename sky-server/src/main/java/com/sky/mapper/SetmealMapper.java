@@ -39,7 +39,7 @@ public interface SetmealMapper {
      * @param id
      * @return
      */
-    SetmealVO findById(Long id);
+    Setmeal findById(Long id);
 
     /**
      * 修改套餐

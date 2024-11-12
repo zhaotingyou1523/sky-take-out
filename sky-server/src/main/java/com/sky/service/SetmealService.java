@@ -30,13 +30,37 @@ public interface SetmealService {
     void deleteBatch(List<Long> ids);
 
 
+    /**
+     * 根据主键查询套餐
+     * @param id
+     * @return
+     */
     SetmealVO findById(Long id);
 
+    /**
+     * 修改套餐
+     * @param setmealDTO
+     */
     void update(SetmealDTO setmealDTO);
 
+    /**
+     * 起售禁售
+     * @param status
+     * @param id
+     */
     void updateStatus(Integer status, Long id);
 
+    /**
+     * 查询套餐列表
+     * @param setmeal
+     * @return
+     */
     List<Setmeal> list(Setmeal setmeal);
 
+    /**
+     * 根据套餐主键获取菜品工具类
+     * @param id
+     * @return
+     */
     List<DishItemVO> getDishItemsBySetmealId(Long id);
 }

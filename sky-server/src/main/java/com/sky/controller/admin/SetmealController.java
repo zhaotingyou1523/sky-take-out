@@ -97,9 +97,10 @@ public class SetmealController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("起售 禁售")
-    @CacheEvict(cacheNames = "setemealCache",allEntries = true)
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)
     public Result<?> updateStatus(@PathVariable Integer status, Long id){
         setmealService.updateStatus(status,id);
         return Result.success();
     }
+
 }

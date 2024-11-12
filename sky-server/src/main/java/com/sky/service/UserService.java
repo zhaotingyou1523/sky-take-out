@@ -13,5 +13,11 @@ public interface UserService {
      */
     User wxLogin(UserLoginDTO userLoginDTO) throws IOException;
 
+    /**
+     * 获得openid
+     * @param code
+     * @return
+     * @throws IOException
+     */
     String getOpenid(String code) throws IOException;
 }

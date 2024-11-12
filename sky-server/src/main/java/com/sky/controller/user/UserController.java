@@ -50,4 +50,10 @@ public class UserController {
         return Result.success(userLoginVO);
     }
 
+    @PostMapping("/logout")
+    @ApiOperation("微信登出")
+    public Result<String> logout() {
+        log.info("用户退出");
+        return Result.success();
+    }
 }
