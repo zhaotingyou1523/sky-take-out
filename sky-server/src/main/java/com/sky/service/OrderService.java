@@ -35,4 +35,14 @@ public interface OrderService {
     OrderStatisticsVO countStatus();
 
     PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    void confirm(OrdersConfirmDTO ordersConfirmDTO);
+
+    void rejection(OrdersRejectionDTO ordersRejectionDTO) throws Exception;
+
+    void cancel(OrdersCancelDTO ordersCancelDTO);
+
+    void delivery(Long id);
+
+    void complete(Long id);
 }
