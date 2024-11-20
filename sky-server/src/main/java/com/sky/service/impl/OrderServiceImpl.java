@@ -22,6 +22,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,8 @@ public class OrderServiceImpl implements OrderService {
     private AddressBookMapper addressBookMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
-//    @Autowired
-//    private WebSocketServer webSocketServer;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     /**
      * 用户下单
@@ -249,7 +250,7 @@ public class OrderServiceImpl implements OrderService {
         map.put("content","订单号：" + outTradeNo);
 
         String json = JSON.toJSONString(map);
-//        webSocketServer.sendToAllClient(json);
+        webSocketServer.sendToAllClient(json);
     }
 
     /**
@@ -415,6 +416,21 @@ public class OrderServiceImpl implements OrderService {
         orders.setEstimatedDeliveryTime(LocalDateTime.now().plusMinutes(30));
         orders.setDeliveryStatus(Orders.PAID);
         orderMapper.update(orders);
+    }
+
+    @Override
+    public void reminder(Long id) {
+        Orders byId = orderMapper.getById(id);
+        if (byId == null) {
+            throw new BaseException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        Map reminderMap = new HashMap<>();
+        reminderMap.put("type", 2);
+        reminderMap.put("id",byId.getId());
+        reminderMap.put("content" , " 订单号:"+ byId.getNumber());
+
+        String map = JSON.toJSONString(reminderMap);
+        webSocketServer.sendToAllClient(map);
     }
 
     /**
